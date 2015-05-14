@@ -29,6 +29,9 @@
     <ClInclude Include="wrapper.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="version.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="blurPython.rc" />
