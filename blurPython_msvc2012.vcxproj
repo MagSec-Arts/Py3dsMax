@@ -507,6 +507,12 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Max2012_Python27|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Max2012_Python27|Win32'" />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Max2015_Python27|x64'">
+    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <TargetExt>.dlx</TargetExt>
+    <TargetName>$(ProjectName)27</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Max2012x64_Python26|x64'">
     <PreBuildEvent>
       <Command>subwcrev $(SolutionDir) $(SolutionDir)version_h_template.txt $(SolutionDir)version.h</Command>
@@ -719,10 +725,10 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Max2015_Python27|x64'">
     <PreBuildEvent>
-      <Command>subwcrev $(SolutionDir) $(SolutionDir)version_h_template.txt $(SolutionDir)version.h</Command>
+      <Command>$(python27_64)\python.exe buildVersion.py</Command>
     </PreBuildEvent>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(MAX2015SDK)\include\maxscript;$(MAX2015SDK)\include;C:\Python27_64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MAX2015SDK)\include\maxscript;$(MAX2015SDK)\include;$(python27_64)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRD_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;__MAXSCRIPT_2015__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -734,7 +740,7 @@
       <AdditionalDependencies>comctl32.lib;odbc32.lib;odbccp32.lib;version.lib;wininet.lib;mnmath.lib;geom.lib;expr.lib;bmm.lib;maxscrpt.lib;core.lib;maxutil.lib;Vfw32.lib;mesh.lib;msxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>LinkVerboseLib</ShowProgress>
       <OutputFile>$(OutDir)blurPython27.dlx</OutputFile>
-      <AdditionalLibraryDirectories>$(MAX2015SDK)\lib\x64\Release;C:\Python27_64\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MAX2015SDK)\lib\x64\Release;$(python27_64)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>python26_d.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ModuleDefinitionFile>blurPython.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -746,8 +752,8 @@
       </DataExecutionPrevention>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>IF DEFINED MAX2015OUT (copy $(OutDir)blurPython27.dlx "$(MAX2015OUT)")</Command>
+      <Message>Copy the dlx to the max plugin folder if defined in the environment.</Message>
     </PostBuildEvent>
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
@@ -1397,6 +1403,7 @@
     <ClInclude Include="imports.h" />
     <ClInclude Include="macros.h" />
     <ClInclude Include="protector.h" />
+    <ClInclude Include="version.h" />
     <ClInclude Include="wrapper.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -1410,7 +1417,7 @@
   <ItemGroup>
     <None Include="blurPython.def" />
     <None Include="license.txt" />
-    <None Include="README.txt" />
+    <None Include="README.md" />
     <None Include="version_h_template.txt" />
   </ItemGroup>
   <ItemGroup>
