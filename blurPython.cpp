@@ -39,10 +39,15 @@ BOOL APIENTRY		DLLMain( HMODULE hModule, DWORD ul_reason, LPVOID lpReserved ) {
 	return TRUE;
 }
 
-// the init_module function is ofund in the studiomax_module file
+// the init_module function is found in the studiomax_module file
 PyMODINIT_FUNC init_module();
 
-__declspec( dllexport ) void				LibInit()			{ init_module(); }
+__declspec( dllexport ) int				LibInitialize(void)			
+{ 
+	init_module();
+	return TRUE;
+}
+
 __declspec( dllexport ) const TCHAR*		LibDescription()	{ return _T( "Py3dsMax Python Extension" ); }
 __declspec( dllexport ) ULONG				LibVersion()		{ return VERSION_3DSMAX; }
 
